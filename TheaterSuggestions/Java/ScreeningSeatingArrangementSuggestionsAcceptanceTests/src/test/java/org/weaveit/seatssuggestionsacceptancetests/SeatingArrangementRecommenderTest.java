@@ -82,14 +82,15 @@ class SeatingArrangementRecommenderTest {
        final String showId = "18";
        final int partyRequested = 1;
 
-       var auditoriumSeatingArrangements =
-               new AuditoriumSeatingArrangements(new AuditoriumLayoutRepository(), new ReservationsProvider());
+       var auditoriumSeatingArrangements = new AuditoriumSeatingArrangements(new AuditoriumLayoutRepository(), new ReservationsProvider());
        var seatingArrangementRecommender = new SeatingArrangementRecommender(auditoriumSeatingArrangements);
        var suggestionsAreMade = seatingArrangementRecommender.makeSuggestion(showId, partyRequested);
 
        assertThat(suggestionsAreMade.seatNames(PricingCategory.FIRST)).containsExactly("A3","A4","A5");
        assertThat(suggestionsAreMade.seatNames(PricingCategory.SECOND)).containsExactly("A1", "A2", "A9");
        assertThat(suggestionsAreMade.seatNames(PricingCategory.THIRD)).containsExactly("E1", "E2", "E3");
+
+       assertThat(suggestionsAreMade.seatNames(PricingCategory.MIXED)).containsExactly("A1", "A2", "A3");
     }
 }
 

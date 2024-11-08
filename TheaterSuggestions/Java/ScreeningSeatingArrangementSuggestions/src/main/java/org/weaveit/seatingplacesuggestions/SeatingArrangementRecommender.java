@@ -12,25 +12,25 @@ public class SeatingArrangementRecommender {
     }
 
     public SuggestionsAreMade makeSuggestion(String showId, int partyRequested) {
-        var auditoriumSeating = auditoriumSeatingArrangements.findByShowId(showId);
+        var auditoriumSeating_regular_categories = auditoriumSeatingArrangements.findByShowId(showId);
+        var auditoriumSeating_mixed_categories = auditoriumSeatingArrangements.findByShowId(showId);
 
         var suggestionsMade = new SuggestionsAreMade(showId, partyRequested);
 
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.FIRST));
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.SECOND));
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.THIRD));
+        //  TODO: make a dynamic loop over all PricingCategory
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories, partyRequested, PricingCategory.FIRST));
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories, partyRequested, PricingCategory.SECOND));
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories, partyRequested, PricingCategory.THIRD));
 
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_mixed_categories,   partyRequested, PricingCategory.MIXED));
+        
         if (suggestionsMade.matchExpectations())
             return suggestionsMade;
 
         return new SuggestionsAreAreNotAvailable(showId, partyRequested);
     }
 
-    private static List<SuggestionIsMade> giveMeSuggestionsFor(
-            AuditoriumSeatingArrangement auditoriumSeatingArrangement, int partyRequested, PricingCategory pricingCategory) {
+    private static List<SuggestionIsMade> giveMeSuggestionsFor(AuditoriumSeatingArrangement auditoriumSeatingArrangement, int partyRequested, PricingCategory pricingCategory) {
         var foundedSuggestions = new ArrayList<SuggestionIsMade>();
 
         for (int i = 0; i < NUMBER_OF_SUGGESTIONS; i++) {

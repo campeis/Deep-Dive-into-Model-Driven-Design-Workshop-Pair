@@ -18,7 +18,7 @@ public class SeatingPlace {
     }
 
     public boolean matchCategory(PricingCategory pricingCategory) {
-        return this.pricingCategory == pricingCategory;
+        return (pricingCategory == PricingCategory.MIXED) ? true : this.pricingCategory == pricingCategory;
     }
 
     public void allocate() {
