@@ -1,18 +1,7 @@
 package org.weaveit.seatingplacesuggestions;
 
-public class SeatingPlace {
+public record SeatingPlace(String rowName, int number, PricingCategory pricingCategory,SeatingPlaceAvailability seatingPlaceAvailability) {
 
-    private final String rowName;
-    private final int number;
-    private final PricingCategory pricingCategory;
-    private SeatingPlaceAvailability seatingPlaceAvailability;
-
-    public SeatingPlace(String rowName, int number, PricingCategory pricingCategory, SeatingPlaceAvailability seatingPlaceAvailability) {
-        this.rowName = rowName;
-        this.number = number;
-        this.pricingCategory = pricingCategory;
-        this.seatingPlaceAvailability = seatingPlaceAvailability;
-    }
     public boolean isAvailable() {
         return seatingPlaceAvailability == SeatingPlaceAvailability.AVAILABLE;
     }
@@ -21,9 +10,10 @@ public class SeatingPlace {
         return (pricingCategory == PricingCategory.MIXED) ? true : this.pricingCategory == pricingCategory;
     }
 
-    public void allocate() {
+    public SeatingPlace allocate() {
         if (seatingPlaceAvailability == SeatingPlaceAvailability.AVAILABLE)
-            seatingPlaceAvailability = SeatingPlaceAvailability.ALLOCATED;
+            return new SeatingPlace(this.rowName, this.number, this.pricingCategory, SeatingPlaceAvailability.ALLOCATED);
+        return this;
     }
 
     @Override

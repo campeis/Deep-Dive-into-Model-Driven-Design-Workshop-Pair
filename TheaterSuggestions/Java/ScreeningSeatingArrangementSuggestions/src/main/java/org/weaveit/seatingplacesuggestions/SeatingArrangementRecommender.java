@@ -13,7 +13,6 @@ public class SeatingArrangementRecommender {
 
     public SuggestionsAreMade makeSuggestion(String showId, int partyRequested) {
         var auditoriumSeating_regular_categories = auditoriumSeatingArrangements.findByShowId(showId);
-        var auditoriumSeating_mixed_categories = auditoriumSeatingArrangements.findByShowId(showId);
 
         var suggestionsMade = new SuggestionsAreMade(showId, partyRequested);
 
@@ -21,9 +20,8 @@ public class SeatingArrangementRecommender {
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories, partyRequested, PricingCategory.FIRST));
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories, partyRequested, PricingCategory.SECOND));
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories, partyRequested, PricingCategory.THIRD));
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_regular_categories,   partyRequested, PricingCategory.MIXED));
 
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating_mixed_categories,   partyRequested, PricingCategory.MIXED));
-        
         if (suggestionsMade.matchExpectations())
             return suggestionsMade;
 
@@ -38,7 +36,7 @@ public class SeatingArrangementRecommender {
 
             if (seatingOptionSuggested.matchExpectation()) {
                 for (var seatingPlace : seatingOptionSuggested.seats()) {
-                    seatingPlace.allocate();
+                    auditoriumSeatingArrangement = auditoriumSeatingArrangement.allocate(seatingPlace);
                 }
 
                 foundedSuggestions.add(new SuggestionIsMade(seatingOptionSuggested));

@@ -1,10 +1,9 @@
 package org.weaveit.seatingplacesuggestions;
 
+import java.util.LinkedList;
 import java.util.List;
 
-public class Row {
-    private final String name;
-    private final List<SeatingPlace> seatingPlaces;
+public record Row (String name, List<SeatingPlace> seatingPlaces){
 
     public Row(String name, List<SeatingPlace> seatingPlaces) {
         this.name = name;
@@ -27,4 +26,15 @@ public class Row {
         return new SeatingOptionIsNotAvailable(partyRequested, pricingCategory);
     }
 
+    public Row allocate(SeatingPlace seatingPlace) {
+        var seating_place_to_allocate = seatingPlaces.stream().filter(seatingPlaceLoop -> seatingPlaceLoop.number() == seatingPlace.number()).findFirst();
+        if (seating_place_to_allocate.isEmpty()){
+            return this;
+        }
+        var allocated_seating_place = seating_place_to_allocate.get().allocate();
+
+
+        var allocated_places = this.seatingPlaces.stream().map(place-> place.number() == seatingPlace.number() ? allocated_seating_place : place).toList();;
+        return new Row(this.name(), allocated_places);
+    }
 }
