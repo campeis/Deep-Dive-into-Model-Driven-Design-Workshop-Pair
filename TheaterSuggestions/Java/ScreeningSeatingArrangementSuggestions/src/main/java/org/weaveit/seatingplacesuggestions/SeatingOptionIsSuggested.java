@@ -1,6 +1,7 @@
 package org.weaveit.seatingplacesuggestions;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class SeatingOptionIsSuggested {
@@ -23,7 +24,7 @@ public class SeatingOptionIsSuggested {
     }
 
     public List<SeatingPlace> seats() {
-        return seats;
+        return seats.stream().sorted(Comparator.comparingInt(SeatingPlace::number)).toList();
     }
 
     public PricingCategory pricingCategory() { return pricingCategory; }
