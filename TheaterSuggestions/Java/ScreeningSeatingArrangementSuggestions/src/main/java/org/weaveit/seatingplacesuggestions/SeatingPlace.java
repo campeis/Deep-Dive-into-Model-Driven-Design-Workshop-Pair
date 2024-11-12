@@ -15,6 +15,11 @@ public record SeatingPlace(String rowName, int number, PricingCategory pricingCa
             return new SeatingPlace(this.rowName, this.number, this.pricingCategory, SeatingPlaceAvailability.ALLOCATED);
         return this;
     }
+    
+    public float distanceFromCenterOfTheRow (float centerOfTheRow) {
+        return Math.abs(centerOfTheRow - this.number());
+    }
+
 
     @Override
     public String toString() {
